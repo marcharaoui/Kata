@@ -11,6 +11,7 @@ This is a Python package that has the following scripts:
 - **convert_data.py:** This script takes a number, analyses it and outputs the corresponding string values,
 - **check_data.py:** This script checks if the dataset has the right structure and types. It needs to be a list of ints.
 
+Open a terminal in the project directory, and run the following command line: `python main.py`.
 
 ### Created using
 Python 3.10.6
