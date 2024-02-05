@@ -3,7 +3,7 @@ Kata: number to french converter
 
 ## Introduction
 
-This work is done on Python and the goal is to take a list of int numbers and translates them in french to a list of strings.
+This work is done on Python and the goal is to take a list of int numbers and to translate them in french using a list of strings.
 
 ## How to use
 This is a Python package that has the following scripts:
