@@ -60,20 +60,44 @@ class Int2French:
                 first_value = int(str(number)[0])
                 return self.units[first_value] + '-cents' if number % 100 == 0 else self.units[first_value] + '-cent-' + self.translate2french(number - first_value*100)
             
-        # for bigger numbers
-        else:
+        # For bigger numbers
+        elif len(str(number)) == 4:
             if number in self.big:
                 return self.big[number] 
-            pass
+            elif str(number)[0] == '1':
+                return 'mille-' + self.translate2french(number - 1000)
+            else:
+                first_value = int(str(number)[0])
+                return self.units[first_value] + '-milles' if number % 1000 == 0 else self.units[first_value] + '-mille-' + self.translate2french(number - first_value*1000)
+        
+        # For even bigger numbers
+        else:
+            factor = int(str(number)[:len(str(number))-3]) # If we have 91800 we want to get 91
+            end    = int(str(number)[len(str(number))-3:]) # If we have 91800 we want to get 800
+            return self.translate2french(factor) + '-milles' if number % 1000 == 0 else self.translate2french(factor) + '-mille-' + self.translate2french(end)
 
 
 # Quick test to see if everything works
 if __name__ == "__main__":
     converter = Int2French()
-    print(converter.translate2french(0))     # zéro
-    print(converter.translate2french(22))    # vingt-deux
-    print(converter.translate2french(71))    # soixante-et-onze
-    print(converter.translate2french(131))   # cent-trente-et-un
-    print(converter.translate2french(231))   # deux-cent-trente-et-un
-    print(converter.translate2french(700))   # sept-cents
-    print(converter.translate2french(1001))  # mille 
+
+    # 0 to 99
+    print(converter.translate2french(0))      # zéro
+    print(converter.translate2french(22))     # vingt-deux
+    print(converter.translate2french(71))     # soixante-et-onze
+
+    # 100 to 999
+    print(converter.translate2french(131))    # cent-trente-et-un
+    print(converter.translate2french(231))    # deux-cent-trente-et-un
+    print(converter.translate2french(700))    # sept-cents
+
+    # 1k to 9999
+    print(converter.translate2french(1000))   # mille 
+    print(converter.translate2french(1999))   # mille-neuf-cent-quatre-vingt-dix-neuf
+    print(converter.translate2french(6000))   # six-milles
+    print(converter.translate2french(9871))   # neuf-mille-huit-cent-soixante-et-onze 
+
+    # 10k to 999999
+    print(converter.translate2french(20000))  # vingt-milles 
+    print(converter.translate2french(91820))  # quatre-vingt-onze-mille-huit-cents
+    print(converter.translate2french(999999)) # neuf-cent-quatre-vingt-dix-neuf-mille-neuf-cent-quatre-vingt-dix-neuf
