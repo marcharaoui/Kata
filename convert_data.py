@@ -4,6 +4,8 @@
 # Marc Haraoui - created on 05/02/2024
 # =========================================== #
 
+#! 'Mille' never takes S, but I followed the challenge's statements
+
 class Int2French:
     def __init__(self):
         # 0 to 16 have no rules and are the following

@@ -6,6 +6,7 @@
 
 from check_data import examine
 from convert_data import Int2French
+from better_convert import Number2French
 
 # =============== Parameters ================ #
 
@@ -20,10 +21,13 @@ if __name__ == "__main__":
     examine(input) # Check if input is a list of ints
 
     # Create object 
-    converter = Int2French()
+    converter        = Int2French()
+    better_converter = Number2French()
 
     for int_data in input:
-        str_data = converter.translate2french(int_data) # Convert ont int at a time
+        # Convert one int at a time
+        # str_data = converter.translate2french(int_data) # Without ChatGPT and while respecting time limits
+        str_data = converter.translate2french(int_data)   # With ChatGPT
         results_list.append(str_data) # Store value in a list
     
     print(results_list) # Final results
