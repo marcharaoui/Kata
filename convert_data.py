@@ -20,33 +20,56 @@ class Int2French:
             60: 'soixante', 70: 'soixante-dix', 80: 'quatre-vingts', 90: 'quatre-vingt-dix'
         }
 
+        # The bigger numbers
+        self.big = {
+            100: 'cent', 1000: 'mille'
+        }
+
     def translate2french(self, number):
-        if number in self.units:
-            return self.units[number] 
+        # For numbers between 0 and 99
+        if len(str(number)) < 3: 
+            if number in self.units:
+                return self.units[number] 
+            
+            elif number < 20:
+                return 'dix-' + self.units[number - 10] 
+            
+            elif number < 70:
+                # 20-69 is vingt to soixante-neuf
+                base = number - number % 10
+                if number % 10 == 0:
+                    return self.tens[base]
+                else: 
+                    return self.tens[base] + '-et-' + self.units[number % 10] if number % 10 == 1 else self.tens[base] + '-' + self.units[number % 10]
+            
+            elif number < 80:
+                # 70-79 is soixante-dix to soixante-dix-neuf
+                return 'soixante-et-' + self.translate2french(number - 60) if number % 10 == 1 else 'soixante-' + self.translate2french(number - 60)
+            else:
+                # 80-89 is quatre-vingt to quatre-vingt-neuf (note: 80 is 'quatre-vingts', but we handle 80 directly above)
+                if number == 80: return 'quatre-vingts'
+                return 'quatre-vingt-' + self.translate2french(number - 80) 
         
-        elif number < 20:
-            return 'dix-' + self.units[number - 10] 
-        
-        elif number < 70:
-            base = number - number % 10
-            if number % 10 == 0:
-                return self.tens[base]
-            else: 
-                return self.tens[base] + '-et-' + self.units[number % 10] if number % 10 == 1 else self.tens[base] + '-' + self.units[number % 10]
-        
-        elif number < 80:
-            # 70-79 is soixante-dix to soixante-dix-neuf
-            return 'soixante-et-' + self.translate2french(number - 60) if number % 10 ==1 else 'soixante-' + self.translate2french(number - 60)
+        # For numbers between 100 and 999
+        elif len(str(number)) == 3 : 
+            if number in self.big:
+                return self.big[number] 
+            elif str(number)[0] == '1':
+                return 'cent-' + self.translate2french(number - 100)
+            else:
+                first_value = int(str(number)[0])
+                return self.units[first_value] + '-cents' if number % 100 == 0 else self.units[first_value] + '-cent-' + self.translate2french(number - first_value*100)
+            
         else:
-            # 80-89 is quatre-vingt to quatre-vingt-neuf (note: 80 is 'quatre-vingts', but we handle 80 directly above)
-            if number == 80: return 'quatre-vingts'
-            return 'quatre-vingt-' + self.translate2french(number - 80) 
+            pass
 
 
 # Quick test to see if everything works
 if __name__ == "__main__":
     converter = Int2French()
-    print(converter.translate2french(0))  # zéro
-    print(converter.translate2french(22)) # vingt-deux
-    print(converter.translate2french(71)) # soixante-et-onze
-    print(converter.translate2french(91)) # quatre-vingt-onze
+    print(converter.translate2french(0))   # zéro
+    print(converter.translate2french(22))  # vingt-deux
+    print(converter.translate2french(71))  # soixante-et-onze
+    print(converter.translate2french(131)) # cent-trente-et-un
+    print(converter.translate2french(231)) # deux-cent-trente-et-un
+    print(converter.translate2french(700)) # sept-cents
