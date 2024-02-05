@@ -60,16 +60,20 @@ class Int2French:
                 first_value = int(str(number)[0])
                 return self.units[first_value] + '-cents' if number % 100 == 0 else self.units[first_value] + '-cent-' + self.translate2french(number - first_value*100)
             
+        # for bigger numbers
         else:
+            if number in self.big:
+                return self.big[number] 
             pass
 
 
 # Quick test to see if everything works
 if __name__ == "__main__":
     converter = Int2French()
-    print(converter.translate2french(0))   # zéro
-    print(converter.translate2french(22))  # vingt-deux
-    print(converter.translate2french(71))  # soixante-et-onze
-    print(converter.translate2french(131)) # cent-trente-et-un
-    print(converter.translate2french(231)) # deux-cent-trente-et-un
-    print(converter.translate2french(700)) # sept-cents
+    print(converter.translate2french(0))     # zéro
+    print(converter.translate2french(22))    # vingt-deux
+    print(converter.translate2french(71))    # soixante-et-onze
+    print(converter.translate2french(131))   # cent-trente-et-un
+    print(converter.translate2french(231))   # deux-cent-trente-et-un
+    print(converter.translate2french(700))   # sept-cents
+    print(converter.translate2french(1001))  # mille 
