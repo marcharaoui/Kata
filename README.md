@@ -13,5 +13,5 @@ This is a Python package that has the following scripts:
 
 Open a terminal in the project directory, and run the following command line: `python main.py`.
 
-### Created using
+### Tested on
 Python 3.10.6
