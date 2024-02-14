@@ -1,29 +1,58 @@
 # =========================================== #
-# Kata project: number2french
+# Kata project: number2WORD
 # Main script
 # Marc Haraoui - created on 05/02/2024
 # =========================================== #
 
+import argparse
 from check_data import examine
 from convert_to_french import Int2French
+from convert_to_english import Int2English
 
 # =============== Parameters ================ #
 
-results_list = [] 
+complete_data = {}
 
 # =========================================== #
 
 if __name__ == "__main__":
     
+    parser = argparse.ArgumentParser(description='Converter')
+    parser.add_argument('--language',
+                        help    = 'insert language(s) to convert to (default is french)',
+                        choices = ["french", "english"],
+                        nargs   = '+',
+                        type    = str,
+                        default = ["french"])
+    parser.add_argument('--number',
+                        help    = 'insert integer(s) to be converted (between 0 and 999 999)',
+                        nargs   ='+', 
+                        type    = int,
+                        default = [0, 21, 71, 101, 9999, 12345, 999900])
+
+    args = parser.parse_args()
+
+    # Chosen languages
+    print(f"Languages chosen: {args.language}")
+
     # Dataset checkup
-    input = [0, 1, 5, 10, 11, 15, 20, 21, 30, 35, 50, 51, 68, 70, 75, 99, 100, 101, 105, 111, 123, 168, 171, 175, 199, 200, 201, 555, 999, 1000, 1001, 1111, 1199, 1234, 1999, 2000, 2001, 2020, 2021, 2345, 9999, 10000, 11111, 12345, 123456, 654321, 999999]
+    input = args.number
     examine(input) # Check if input is a list of ints
-
-    # Create object 
-    converter        = Int2French()
-
-    for int_data in input: # Convert one int at a time
-        str_data = converter.translate2french(int_data) 
-        results_list.append(str_data) # Store value in a list
     
-    print(results_list) # Final results
+    # Preparing the data dictionary
+    complete_data["input"] = input
+    for lang in args.language:
+        complete_data[lang] = []
+
+        for int_data in input: # Convert one int at a time
+            # Creating the language objects
+            if lang == "french":
+                    converter = Int2French()  
+            elif lang == "english":
+                    converter = Int2English()
+            else: raise ValueError("No language to convert to!")
+
+            complete_data[lang].append(converter.translate(int_data)) # Converting numbers and storing results
+
+    # Print input and outputs
+    print(complete_data) 
