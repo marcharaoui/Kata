@@ -8,6 +8,7 @@ import argparse
 from check_data import examine
 from convert_to_french import Int2French
 from convert_to_english import Int2English
+from convert_to_spanish import Int2Spanish
 
 # =============== Parameters ================ #
 
@@ -20,7 +21,7 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser(description='Converter')
     parser.add_argument('--language',
                         help    = 'insert language(s) to convert to (default is french)',
-                        choices = ["french", "english"],
+                        choices = ["french", "english", "spanish"],
                         nargs   = '+',
                         type    = str,
                         default = ["french"])
@@ -44,15 +45,18 @@ if __name__ == "__main__":
     for lang in args.language:
         complete_data[lang] = []
 
-        for int_data in input: # Convert one int at a time
-            # Creating the language objects
-            if lang == "french":
-                    converter = Int2French()  
-            elif lang == "english":
-                    converter = Int2English()
-            else: raise ValueError("No language to convert to!")
+        # Creating the language objects
+        if lang == "french":
+                converter = Int2French()  
+        elif lang == "english":
+                converter = Int2English()
+        elif lang == "spanish":
+                converter = Int2Spanish()
+        else: raise ValueError("No language to convert to!")
 
-            complete_data[lang].append(converter.translate(int_data)) # Converting numbers and storing results
+        # Convert one int at a time
+        for int_data in input:
+                complete_data[lang].append(converter.translate(int_data)) # Converting numbers and storing results
 
     # Print input and outputs
     print(complete_data) 
